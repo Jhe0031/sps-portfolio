@@ -26,3 +26,39 @@ function addRandomGreeting() {
   const greetingContainer = document.getElementById('greeting-container');
   greetingContainer.innerText = greeting;
 }
+
+/** Fetches the current date from the server and adds it to the page. */
+async function helloWorld() {
+  const responseFromServer = await fetch('/hello');
+  const textFromResponse = await responseFromServer.text();
+
+  const textContainer = document.getElementById('hello-world');
+  textContainer.innerText = textFromResponse;
+}
+
+async function getGreetings() {
+  const responseFromServer = await fetch('/hello');
+  // The json() function returns an object that contains fields that we can
+  // reference to create HTML.
+  const greetingItems = await responseFromServer.json();
+
+  const greetingsListElement = document.getElementById('hello-world');
+  greetingsListElement.innerHTML = '';
+
+  console.log("Entered list");
+  greetingsListElement.appendChild(
+      createListElement('English: ' + greetingItems.enGreeting));
+  greetingsListElement.appendChild(
+      createListElement('Spanish: ' + greetingItems.spGreeting));
+  greetingsListElement.appendChild(
+      createListElement('Chinese: ' + greetingItems.cnGreeting));
+  greetingsListElement.appendChild(
+      createListElement('French: ' + greetingItems.fraGreeting));
+}
+
+/** Creates an <li> element containing text. */
+function createListElement(text) {
+  const liElement = document.createElement('li');
+  liElement.innerText = text;
+  return liElement;
+}
